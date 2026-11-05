@@ -1,0 +1,684 @@
+local HttpService = game:GetService("HttpService")
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local function Moon(Star)
+    local Cloud = {
+        a="ᴀ",b="ʙ",c="ᴄ",d="ᴅ",e="ᴇ",f="ꜰ",g="ɢ",h="ʜ",i="ɪ",j="ᴊ",k="ᴋ",l="ʟ",m="ᴍ",
+        n="ɴ",o="ᴏ",p="ᴘ",q="ǫ",r="ʀ",s="s",t="ᴛ",u="ᴜ",v="ᴠ",w="ᴡ",x="x",y="ʏ",z="ᴢ",
+        A="ᴀ",B="ʙ",C="ᴄ",D="ᴅ",E="ᴇ",F="ꜰ",G="ɢ",H="ʜ",I="ɪ",J="ᴊ",K="ᴋ",L="ʟ",M="ᴍ",
+  N="ɴ",O="ᴏ",P="ᴘ",Q="ǫ",R="ʀ",S="s",T="ᴛ",U="ᴜ",V="ᴠ",W="ᴡ",X="x",Y="ʏ",Z="ᴢ"
+    }
+    local Sky = ""
+    for Wind = 1, #Star do
+        local Rain = Star:sub(Wind, Wind)
+        Sky = Sky .. (Cloud[Rain] or Rain)
+    end
+    return Sky
+end
+
+local function convertRGB(value)
+    local RGBcolour = { ["0"]="9", ["1"]="0", ["2"]="1", ["3"]="2", ["4"]="3", ["5"]="4", ["6"]="5", ["7"]="6", ["8"]="7", ["9"]="8" }
+    local result = {}
+    for i = 1, #value do
+        local digit = value:sub(i, i)
+        result[i] = RGBcolour[digit] or digit
+    end
+    return table.concat(result)
+end
+
+
+
+
+task.spawn(function()
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local Ocean = ReplicatedStorage:WaitForChild("RE", 10)
+    local River = Ocean:WaitForChild("1RPNam1eColo1r", 10)
+    local Stone = Ocean:WaitForChild("1RPNam1eTex1t", 10)
+    
+    local Mountain = Color3.new(1, 0, 0)
+    local Valley = Moon("😈 VÆLOR MUSIC [1000+ ids]")
+    local Hill = Moon("vælor music 1k ids")
+
+  
+    pcall(function()
+        River:FireServer("PickingRPBioColor", Mountain)
+        River:FireServer("PickingRPNameColor", Mountain)
+        Stone:FireServer("RolePlayName", Valley)
+        Stone:FireServer("RolePlayBio", Hill)
+    end)
+    end)
+    
+
+
+local MarketplaceService = game:GetService("MarketplaceService")
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local LocalPlayer = Players.LocalPlayer
+local MUSIC_GAMEPASS_ID = 9066988
+
+local ownsMusicPass = false
+
+pcall(function()
+    ownsMusicPass = MarketplaceService:UserOwnsGamePassAsync(
+        LocalPlayer.UserId,
+        MUSIC_GAMEPASS_ID
+    )
+end)
+
+if not ownsMusicPass then
+
+    pcall(function()
+        local args = {
+            "shopInteraction",
+            {
+                id = MUSIC_GAMEPASS_ID,
+                shop = "new",
+                productType = "GamePass"
+            }
+        }
+
+        ReplicatedStorage
+            :WaitForChild("Remotes")
+            :WaitForChild("TelemetryClientInteraction")
+            :FireServer(unpack(args))
+    end)
+
+    pcall(function()
+        StarterGui:SetCore("SendNotification", {
+            Title = "VÆLOR MUSIC",
+            Text = "Require Music Gamepass",
+            Duration = 10
+        })
+    end)
+
+end
+
+
+local MAX_VOLUME = 5
+
+local function maxVolume(obj)
+    if not obj then
+        return
+    end
+
+    if obj:IsA("Sound") then
+        obj.Volume = MAX_VOLUME
+        return
+    end
+
+    for _, v in ipairs(obj:GetDescendants()) do
+        if v:IsA("Sound") then
+            v.Volume = MAX_VOLUME
+        end
+    end
+end
+
+task.spawn(function()
+    while task.wait(0.2) do
+        pcall(function()
+
+            local vehicles = workspace:FindFirstChild("Vehicles")
+
+            if vehicles then
+                for _, vehicle in ipairs(vehicles:GetChildren()) do
+
+                    -- Find the vehicle belonging to the local player
+                    if vehicle.Name:lower():find(LocalPlayer.Name:lower(), 1, true) then
+
+                        local body = vehicle:FindFirstChild("Body")
+
+                        if body then
+                            local turbo = body:FindFirstChild("TurboPosition")
+
+                            if turbo then
+                                local emitter = turbo:FindFirstChild("SoundEmmiter")
+                                maxVolume(emitter)
+                            end
+                        end
+                    end
+                end
+            end
+
+            local playerModel = workspace:FindFirstChild(LocalPlayer.Name)
+
+            if playerModel then
+                local noMotor =
+                    playerModel:FindFirstChild("NoMotorVehicleModel")
+
+                if noMotor then
+                    maxVolume(noMotor)
+                end
+            end
+
+            if playerModel then
+                local boombox =
+                    playerModel:FindFirstChild("Boombox")
+
+                if boombox then
+                    local handle =
+                        boombox:FindFirstChild("Handle")
+
+                    if handle then
+                        local playersChoice =
+                            handle:FindFirstChild("PlayersChoice")
+
+                        maxVolume(playersChoice)
+                    end
+                end
+            end
+
+        end)
+    end
+end)
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "VælorMusic_Official"
+ScreenGui.Parent = game:GetService("CoreGui")
+ScreenGui.ResetOnSpawn = false
+
+-- Responsive scaling
+local UIScale = Instance.new("UIScale")
+UIScale.Parent = ScreenGui
+
+local Camera = workspace.CurrentCamera
+
+local function updateScale()
+    local viewport = Camera.ViewportSize
+
+    -- Base design: 1080x720
+    local scaleX = viewport.X / 1080
+    local scaleY = viewport.Y / 720
+
+    -- Use the smaller dimension so the UI fits
+    local scale = math.min(scaleX, scaleY)
+
+    -- Prevent it from becoming too tiny or huge
+    UIScale.Scale = math.clamp(scale, 0.95, 1.65)
+end
+
+updateScale()
+
+Camera:GetPropertyChangedSignal("ViewportSize"):Connect(updateScale)
+
+
+local TextButton = Instance.new("TextButton")
+TextButton.Size = UDim2.new(0, 28, 0, 28)
+TextButton.Position = UDim2.new(0.5, 0, 0.1, 0)
+TextButton.AnchorPoint = Vector2.new(0.5, 0.5)
+TextButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TextButton.Text = "🎵"
+TextButton.TextColor3 = Color3.new(1, 1, 1)
+TextButton.TextSize = 17
+TextButton.Visible = false
+TextButton.Draggable = true
+Instance.new("UICorner", TextButton).CornerRadius = UDim.new(1, 0)
+TextButton.Parent = ScreenGui
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Thickness = 2
+UIStroke.Color = Color3.fromRGB(255, 255, 255)
+UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke.Parent = TextButton
+
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 250, 0, 250)
+Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+Frame.BackgroundColor3 = Color3.fromRGB(1, 1, 1)
+Frame.BackgroundTransparency = 0.6
+Frame.Active = true
+Frame.Active = true
+Frame.Draggable = true
+Frame.Parent = ScreenGui
+Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 10)
+
+local Title = Instance.new("TextLabel", Frame)
+Title.Position = UDim2.new(0, 10, 0, 10)
+Title.Size = UDim2.new(0, 150, 0, 20)
+Title.Text = "😛 Vælor Music 1k ids🎵"
+Title.TextColor3 = Color3.new(1, 1, 1)
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 18
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.BackgroundTransparency = 1
+
+local MinButton = Instance.new("TextButton", Frame)
+MinButton.Size = UDim2.new(0, 20, 0, 20)
+MinButton.Position = UDim2.new(1, -60, 0, 10)
+MinButton.Text = "-"
+MinButton.TextSize = 20
+MinButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+Instance.new("UICorner", MinButton)
+
+local CloseButton = Instance.new("TextButton", Frame)
+CloseButton.Size = UDim2.new(0, 20, 0, 20)
+CloseButton.Position = UDim2.new(1, -25, 0, 10)
+CloseButton.Text = "X"
+CloseButton.TextSize = 15
+CloseButton.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
+Instance.new("UICorner", CloseButton)
+
+-- Confirm Close Frame
+local ConfirmFrame = Instance.new("Frame", Frame)
+ConfirmFrame.Size = UDim2.new(1, 0, 1, 0)
+ConfirmFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ConfirmFrame.BackgroundTransparency = 0.2
+ConfirmFrame.ZIndex = 10
+ConfirmFrame.Visible = false
+Instance.new("UICorner", ConfirmFrame).CornerRadius = UDim.new(0, 10)
+
+local ConfirmText = Instance.new("TextLabel", ConfirmFrame)
+ConfirmText.Size = UDim2.new(1, 0, 0, 80)
+ConfirmText.Position = UDim2.new(0, 0, 0.3, 0)
+ConfirmText.BackgroundTransparency = 1
+ConfirmText.Text = "Stop Music & Close Script?"
+ConfirmText.TextColor3 = Color3.fromRGB(255,255,255)
+ConfirmText.Font = Enum.Font.GothamBold
+ConfirmText.TextSize = 18
+ConfirmText.ZIndex = 11
+
+local YesBtn = Instance.new("TextButton", ConfirmFrame)
+YesBtn.Size = UDim2.new(0, 50, 0, 20)
+YesBtn.Position = UDim2.new(0.5, -110, 0.6, 0)
+YesBtn.Text = "Yes"
+YesBtn.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
+YesBtn.TextColor3 = Color3.fromRGB(255,255,255)
+YesBtn.ZIndex = 11
+Instance.new("UICorner", YesBtn)
+
+local NoBtn = Instance.new("TextButton", ConfirmFrame)
+NoBtn.Size = UDim2.new(0, 50, 0, 20)
+NoBtn.Position = UDim2.new(0.5, 10, 0.6, 0)
+NoBtn.Text = "No"
+NoBtn.BackgroundColor3 = Color3.fromRGB(50, 180, 50)
+NoBtn.TextColor3 = Color3.fromRGB(255,255,255)
+NoBtn.ZIndex = 11
+Instance.new("UICorner", NoBtn)
+
+local TabsScroll = Instance.new("ScrollingFrame", Frame)
+TabsScroll.Size = UDim2.new(1, -20, 0, 35)
+TabsScroll.Position = UDim2.new(0, 10, 0, 45)
+TabsScroll.BackgroundTransparency = 1
+TabsScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+TabsScroll.ScrollBarThickness = 2
+TabsScroll.BackgroundTransparency = 0.6
+TabsScroll.ScrollingDirection = Enum.ScrollingDirection.X
+TabsScroll.AutomaticCanvasSize = Enum.AutomaticSize.X
+
+local TabsLayout = Instance.new("UIListLayout", TabsScroll)
+TabsLayout.FillDirection = Enum.FillDirection.Horizontal
+TabsLayout.Padding = UDim.new(0, 5)
+TabsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+local ContentFrame = Instance.new("Frame", Frame)
+ContentFrame.Size = UDim2.new(1, -20, 1, -95)
+ContentFrame.Position = UDim2.new(0, 10, 0, 85)
+ContentFrame.BackgroundTransparency = 0.6
+ContentFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Instance.new("UICorner", ContentFrame)
+
+local function u9(songId)
+    local RE = game:GetService("ReplicatedStorage"):WaitForChild("RE")
+    local t1 = { RE["1Player1sHous1e"], RE["1Player1sCa1r"], RE["1NoMoto1rVehicle1s"], RE.PlayerToolEvent, RE.Props, RE["1Hors1eRemot1e"] }
+    local t2 = { "PickHouseMusicText", "Music", "PickingScooterMusicText", "ToolMusicText", "PropMusicText", "HorseMusicText" }
+
+   
+    for k, v in pairs(t1) do
+        pcall(function() v:FireServer(t2[k], "0", true) end)
+    end
+    task.wait(0.25)
+
+  
+    for k, v in pairs(t1) do
+        pcall(function() v:FireServer(t2[k], tostring(songId), true) end)
+    end
+end
+
+-- UI Tab Creator
+local function CreateTab(name)
+    local Scroll = Instance.new("ScrollingFrame", ContentFrame)
+
+    Scroll.Size = UDim2.new(1, -10, 1, -10)
+    Scroll.Position = UDim2.new(0, 5, 0, 5)
+
+    Scroll.BackgroundTransparency = 1
+    Scroll.BorderSizePixel = 0
+
+    Scroll.ScrollBarThickness = 3
+    Scroll.ScrollingDirection = Enum.ScrollingDirection.Y
+
+    -- Automatically expand canvas based on children
+    Scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    Scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+    Scroll.Visible = false -- Hide by default
+
+    local Layout = Instance.new("UIListLayout", Scroll)
+    Layout.FillDirection = Enum.FillDirection.Vertical
+    Layout.SortOrder = Enum.SortOrder.LayoutOrder
+    Layout.Padding = UDim.new(0, 10)
+
+    local TabBtn = Instance.new("TextButton", TabsScroll)
+    TabBtn.Size = UDim2.new(0, 80, 1, -5)
+    TabBtn.Text = name
+    TabBtn.BackgroundTransparency = 0.5
+    TabBtn.TextScaled = true
+    TabBtn.Font = Enum.Font.GothamBold
+    TabBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    TabBtn.TextColor3 = Color3.new(1, 1, 1)
+    Instance.new("UICorner", TabBtn)
+
+    TabBtn.MouseButton1Click:Connect(function()
+        for _, child in pairs(ContentFrame:GetChildren()) do
+            if child:IsA("ScrollingFrame") then child.Visible = false end
+        end
+        Scroll.Visible = true
+    end)
+
+    return Scroll
+end
+
+local TabMain = CreateTab("Main")
+local TabSounds = CreateTab("Sounds")
+local TabIndian = CreateTab("Indian")
+local TabEnglish = CreateTab("English")
+local TabPhonk = CreateTab("Phonk")
+local TabSaved = CreateTab("Saved Songs")
+local TabCredits = CreateTab("Credits")
+local TabDiscord = CreateTab("Discord")
+TabMain.Visible = true
+
+-- Discord Server
+local DcBtn = Instance.new("TextButton", TabDiscord)
+DcBtn.Size = UDim2.new(1, 0, 0, 50)
+DcBtn.Text = " Discord Server"
+DcBtn.TextScaled = true
+DcBtn.Font = Enum.Font.GothamBold
+DcBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
+DcBtn.BackgroundTransparency = 0.3
+DcBtn.TextColor3 = Color3.fromRGB(255,255,255)
+Instance.new("UICorner", DcBtn)
+
+DcBtn.MouseButton1Click:Connect(function()
+    if setclipboard then
+        setclipboard("https://discord.gg/Cwkv5ufq")
+    end
+end)
+
+-- VÆLOR EMOTE PANEL
+local NpBtn = Instance.new("TextButton", TabDiscord)
+NpBtn.Size = UDim2.new(1, 0, 0, 50)
+NpBtn.Text = " VÆLOR EMOTE PANEL"
+NpBtn.TextScaled = true
+NpBtn.Font = Enum.Font.GothamBold
+NpBtn.BackgroundTransparency = 0.3
+NpBtn.BackgroundColor3 = Color3.fromRGB(0,0,0)
+NpBtn.TextColor3 = Color3.fromRGB(255,255,255)
+Instance.new("UICorner", NpBtn)
+
+NpBtn.MouseButton1Click:Connect(function()
+    pcall(function()
+        loadstring(game:HttpGet(
+            "https://scriptblox.com/raw/Universal-Script-MUST-EMOTE-PANEL-BY-N0TZ0RO100-233828"
+        ))()
+    end)
+end)
+
+local CredText = Instance.new("TextLabel", TabCredits)
+CredText.Size = UDim2.new(1, 0, 0, 80)
+CredText.Text = " Created By: N0T_Z0RO100 "
+CredText.Font = Enum.Font.GothamBold
+CredText.TextScaled = true
+CredText.TextColor3 = Color3.new(1, 1, 1)
+CredText.BackgroundTransparency = 1
+
+
+
+local mainRE = game:GetService("ReplicatedStorage")
+    :WaitForChild("RE")
+    :WaitForChild("1NoMoto1rVehicle1s")
+
+local mainRE = game:GetService("ReplicatedStorage"):WaitForChild("RE"):WaitForChild("1NoMoto1rVehicle1s")
+
+local BoardBtn = Instance.new("TextButton", TabMain)
+BoardBtn.Size = UDim2.new(1, -5, 0, 45)
+BoardBtn.Text = "🛹 Board: OFF"
+BoardBtn.TextScaled = true 
+BoardBtn.BackgroundColor3 = Color3.fromRGB(217, 217, 217)
+BoardBtn.TextColor3 = Color3.fromRGB(40, 40, 40)
+Instance.new("UICorner", BoardBtn)
+
+local RgbBtn = Instance.new("TextButton", TabMain)
+RgbBtn.Size = UDim2.new(1, -5, 0, 45)
+RgbBtn.Text = "🌈 RGB board: OFF"
+RgbBtn.TextScaled = true 
+RgbBtn.BackgroundColor3 = Color3.fromRGB(217, 217, 217)
+RgbBtn.TextColor3 = Color3.fromRGB(40, 40, 40)
+Instance.new("UICorner", RgbBtn)
+
+-- RGB Logic
+local vehicleRgb = false
+local hueValue = 0
+
+local SetUnderglowColor = game:GetService("ReplicatedStorage")
+    :WaitForChild("Remotes")
+    :WaitForChild("SetUnderglowColor")
+
+RgbBtn.MouseButton1Click:Connect(function()
+    vehicleRgb = not vehicleRgb
+
+    if vehicleRgb then
+        RgbBtn.Text = "🌈 RGB board: ON"
+
+        task.spawn(function()
+            while vehicleRgb do
+                hueValue = (hueValue + 0.02) % 1
+                local smoothColor = Color3.fromHSV(hueValue, 1, 1)
+
+                pcall(function()
+                    mainRE:FireServer("NoMotorColor", smoothColor)
+                end)
+
+                pcall(function()
+                    SetUnderglowColor:InvokeServer(1, smoothColor)
+                end)
+
+                task.wait(0.05)
+            end
+        end)
+    else
+        RgbBtn.Text = "🌈 RGB board: OFF"
+    end
+end)
+
+local HomeIDBox = Instance.new("TextBox", TabMain)
+HomeIDBox.Size = UDim2.new(1, -5, 0, 45)
+HomeIDBox.PlaceholderText = "music ID Here..."
+HomeIDBox.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+HomeIDBox.TextScaled = true
+HomeIDBox.TextColor3 = Color3.new(1, 1, 1)
+Instance.new("UICorner", HomeIDBox)
+
+local HomePlay = Instance.new("TextButton", TabMain)
+HomePlay.Size = UDim2.new(1, -5, 0, 45)
+HomePlay.Text = "PLAY-STOP"
+HomePlay.TextScaled = true
+HomePlay.Font = Enum.Font.GothamBold
+HomePlay.BackgroundColor3 = Color3.fromRGB(30, 215, 96)
+Instance.new("UICorner", HomePlay)
+HomePlay.MouseButton1Click:Connect(function() u9(HomeIDBox.Text) end)
+
+-- Board Logic
+local isToggledOn = false
+local toggleTweenInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+local function attemptVehicleSpawn()
+    mainRE:FireServer("SegwaySmall")
+    
+    local vehicleSpawned = false
+    local connections = {}
+    
+    local function onChildAdded(child)
+        if child:IsA("Model") or child:IsA("Tool") then
+            vehicleSpawned = true
+        end
+    end
+    
+    table.insert(connections, workspace.ChildAdded:Connect(onChildAdded))
+    if workspace:FindFirstChild("Vehicles") then
+        table.insert(connections, workspace.Vehicles.ChildAdded:Connect(onChildAdded))
+    end
+    if player.Character then
+        table.insert(connections, player.Character.ChildAdded:Connect(onChildAdded))
+    end
+    
+    task.wait(1.5)
+    for _, conn in ipairs(connections) do conn:Disconnect() end
+    
+    if isToggledOn and not vehicleSpawned then
+        mainRE:FireServer("SkateBoard")
+    end
+    
+    -- Always fire board volume
+    pcall(function()
+        local volEvent = game:GetService("Players").LocalPlayer.PlayerGui.MainGUIHandler.MainAudio.Catalog.Header.VolumeContainer.VolumeChangeRequest
+        volEvent:FireServer(100)
+    end)
+end
+
+local function handleToggle()
+    isToggledOn = not isToggledOn
+    if isToggledOn then
+        BoardBtn.Text = "🛹 Board: ON"
+        TweenService:Create(BoardBtn, toggleTweenInfo, {BackgroundColor3 = Color3.fromRGB(46, 125, 50), TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+        task.spawn(attemptVehicleSpawn)
+    else
+        BoardBtn.Text = "🛹 Board: OFF"
+        TweenService:Create(BoardBtn, toggleTweenInfo, {BackgroundColor3 = Color3.fromRGB(217, 217, 217), TextColor3 = Color3.fromRGB(40, 40, 40)}):Play()
+        mainRE:FireServer("Delete NoMotorVehicle")
+    end
+end
+BoardBtn.MouseButton1Click:Connect(handleToggle)
+
+
+
+
+-- Window interactions
+MinButton.MouseButton1Click:Connect(function()
+    Frame.Visible = false
+    TextButton.Visible = true
+end)
+
+TextButton.MouseButton1Click:Connect(function()
+    Frame.Visible = true
+    TextButton.Visible = false
+end)
+
+CloseButton.MouseButton1Click:Connect(function()
+    ConfirmFrame.Visible = true
+end)
+
+YesBtn.MouseButton1Click:Connect(function()
+    u9("0") -- Stop music
+    ScreenGui:Destroy()
+end)
+
+NoBtn.MouseButton1Click:Connect(function()
+    ConfirmFrame.Visible = false
+end)
+
+task.spawn(function()
+    local ok, result = pcall(function() return game:HttpGet("https://pastebin.com/raw/nxWnza4m") end)
+    if ok then
+        local data = HttpService:JSONDecode(result)
+        local songCounter = 1
+
+        local function AddSong(parent, name, id)
+            
+            local rawIdString = tostring(id)
+            local finalID = string.sub(rawIdString, 2)
+       finalID = convertRGB(finalID)
+            
+            local SBtn = Instance.new("TextButton", parent)
+            SBtn.Size = UDim2.new(1, -5, 0, 30) -- Reduced height
+            SBtn.Text = " 🎵 " .. songCounter .. ". " .. name
+            SBtn.TextXAlignment = Enum.TextXAlignment.Left
+            SBtn.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+             SBtn.Transparency = 0
+            SBtn.TextColor3 = Color3.fromRGB(255,255,255)
+            SBtn.ClipsDescendants = true
+            Instance.new("UICorner", SBtn).CornerRadius = UDim.new(0,5)
+            
+            local SaveBtn = Instance.new("TextButton", SBtn)
+            SaveBtn.Size = UDim2.new(0, 35, 1, 0)
+            SaveBtn.Position = UDim2.new(1, -45, 0, 0)
+SaveBtn.BackgroundTransparency = 0.5
+            SaveBtn.Text = "💾"
+            SaveBtn.TextSize = 13
+            SaveBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+            Instance.new("UICorner", SaveBtn).CornerRadius = UDim.new(0,5)
+
+            SBtn.MouseButton1Click:Connect(function() u9(finalID) end)
+
+            SaveBtn.MouseButton1Click:Connect(function()
+                -- Prevent duplication in saved tab by checking names
+                local exists = false
+                for _, child in pairs(TabSaved:GetChildren()) do
+                    if child:IsA("TextButton") and string.find(child.Text, name) then
+                        exists = true
+                    end
+                end
+                
+                if not exists then
+                    local cloned = SBtn:Clone()
+                    cloned.Parent = TabSaved
+                    cloned:FindFirstChildOfClass("TextButton"):Destroy() 
+                    cloned.MouseButton1Click:Connect(function() u9(finalID) end)
+                    
+                    SaveBtn.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
+                    task.wait(0.5)
+                    SaveBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                end
+            end)
+            
+            songCounter = songCounter + 1
+        end
+
+        for _, v in pairs(data) do
+            if v.category == "Home" then AddSong(TabSounds, v.name, v.id)
+            elseif v.category == "Indian" then AddSong(TabIndian, v.name, v.id)
+            elseif v.category == "English" then AddSong(TabEnglish, v.name, v.id)
+            elseif v.category == "Phonk" then AddSong(TabPhonk, v.name, v.id)
+            end
+        end
+    end
+end)
+
+ local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+
+local discord = "https://discord.gg/rQ4Sv2x7"
+
+-- Copy Discord invite
+if setclipboard then
+    setclipboard(discord)
+end
+
+-- Notification
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "『VÆLOR』",
+    Text = "welcome to VÆLOR !!,  Join discord to get more fetures",
+    Duration = 30
+})
+
+game:GetService("StarterGui"):SetCore("SendNotification", { 
+	Title = "VÆLOR MUSIC PANEL";
+	Text = "By Your Daddy N0T_Z0RO100";
+	Icon = "rbxthumb://type=Asset&id=5107182114&w=150&h=150"})
+Duration = 30
+
+
